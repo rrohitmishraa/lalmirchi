@@ -108,7 +108,7 @@ export default function Hero() {
               src={heroImage}
               alt=""
               aria-hidden="true"
-              className="w-[230px] md:w-[380px] rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.9)]"
+              className="w-[230px] md:w-[320px] rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.9)]"
             />
           </motion.div>
 
