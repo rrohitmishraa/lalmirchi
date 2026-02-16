@@ -1,73 +1,78 @@
 import { categories } from "../data/menuData";
+import { useState } from "react";
 
 export default function CategoryFilter({
   activeCategory,
   setActiveCategory,
   setSearchQuery,
 }) {
+  const [localSearch, setLocalSearch] = useState("");
+
+  const handleSearch = (value) => {
+    setLocalSearch(value);
+    setSearchQuery(value);
+  };
+
   return (
-    <div className="space-y-10">
-      {/* FILTER BAR GLASS PANEL */}
-      <div
-        className="
-          bg-white/5
-          backdrop-blur-lg
-          border border-white/10
-          rounded-[40px]
-          shadow-[0_25px_60px_rgba(0,0,0,0.7)]
-          px-6 md:px-10
-          py-6
-        "
-      >
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-          {/* LEFT — Categories */}
-          <div className="flex gap-4 overflow-x-auto no-scrollbar">
-            {categories.map((cat) => {
-              const isActive = activeCategory === cat;
+    <div className="mb-16 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+      {/* CATEGORIES */}
+      <div className="flex gap-8 text-sm tracking-wide overflow-x-auto">
+        {categories.map((cat) => {
+          const active = activeCategory === cat;
 
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`
-                    px-6 py-2 rounded-full text-sm md:text-base font-medium
-                    transition-all duration-300 whitespace-nowrap
-                    ${
-                      isActive
-                        ? "bg-[#c6a75e] text-black shadow-md"
-                        : "bg-white/10 text-gray-300 hover:bg-white/20"
-                    }
-                  `}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
+          return (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`relative transition ${
+                active ? "text-[#c6a75e]" : "text-gray-400 hover:text-white"
+              }`}
+            >
+              {cat}
+              {active && (
+                <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#c6a75e]" />
+              )}
+            </button>
+          );
+        })}
+      </div>
 
-          {/* RIGHT — Search */}
-          <div className="relative w-full md:w-[320px]">
-            <input
-              type="text"
-              placeholder="Search dishes..."
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="
-                w-full
-                bg-white/10
-                backdrop-blur-md
-                border border-white/10
-                rounded-full
-                px-5 py-3
-                text-sm
-                text-white
-                placeholder-gray-400
-                focus:outline-none
-                focus:border-[#c6a75e]
-                transition
-              "
-            />
-          </div>
-        </div>
+      {/* SEARCH BAR */}
+      <div className="relative w-full md:w-80">
+        <input
+          type="text"
+          value={localSearch}
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="Search dishes..."
+          className="
+            w-full
+            bg-[#161616]
+            border border-white/10
+            rounded-full
+            px-12 py-3
+            text-sm
+            text-white
+            placeholder-gray-500
+            focus:outline-none
+            focus:border-[#c6a75e]
+            transition
+          "
+        />
+
+        {/* Search Icon */}
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+          🔍
+        </span>
+
+        {/* Clear Button */}
+        {localSearch && (
+          <button
+            onClick={() => handleSearch("")}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
+          >
+            ✕
+          </button>
+        )}
       </div>
     </div>
   );

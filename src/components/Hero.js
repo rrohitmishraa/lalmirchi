@@ -1,91 +1,172 @@
-import { motion } from "framer-motion";
-import heroDish from "../assets/chicken-half.webp";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import heroImage from "../assets/chicken-half.webp";
 import menuPDF from "../assets/menu.pdf";
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const [vh, setVh] = useState(0);
+
+  // Lock height once to prevent mobile UI jump
+  useEffect(() => {
+    setVh(window.innerHeight);
+  }, []);
+
+  /* ================= PARALLAX ================= */
+
+  const textY = useTransform(scrollY, [0, 400], [0, -35]);
+  const outerY = useTransform(scrollY, [0, 400], [0, 35]);
+  const innerY = useTransform(scrollY, [0, 400], [0, 20]);
+  const centerY = useTransform(scrollY, [0, 400], [0, 10]);
+
   return (
-    <section className="relative w-full min-h-[80vh] md:min-h-[95vh] flex items-center overflow-hidden">
-      <div className="w-full max-w-[1500px] mx-auto px-6 md:px-16 py-16 md:py-28">
-        {/* Glass Container */}
+    <section
+      style={{ height: vh || "100vh" }}
+      className="relative w-full overflow-hidden bg-[#0c0c0c] md:pt-16 flex flex-col"
+    >
+      {/* ================= BACKGROUND ================= */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#2a0000] via-[#3a0000] to-[#0c0c0c]" />
+
+      {/* Smooth Blend To Next Section */}
+      <div className="absolute bottom-0 left-0 w-full h-[55%] bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/70 to-transparent pointer-events-none" />
+
+      {/* ================= TEXT SECTION ================= */}
+      <motion.div
+        style={{ y: textY }}
+        className="relative z-20 px-6 pt-24 md:pt-20"
+      >
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-semibold leading-tight"
+          >
+            More flavour,
+            <span className="text-[#c6a75e]"> less waiting</span>
+            <br />
+            Get your taste back
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mt-6 text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto"
+          >
+            Authentic Bihari dishes cooked daily with bold spices and zero
+            shortcuts.
+          </motion.p>
+
+          <motion.a
+            href={menuPDF}
+            download="Lal-Mirchi-Menu.pdf"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="mt-8 inline-block px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-[#c6a75e] text-black font-medium hover:bg-[#a67c00] transition"
+          >
+            Download Menu
+          </motion.a>
+        </div>
+      </motion.div>
+
+      {/* ================= IMAGES ================= */}
+      <div className="relative z-10 mt-16 pb-16">
+        {/* ================= DESKTOP (md+) ================= */}
         <div
-          className="
-            relative
-            bg-white/5
-            backdrop-blur-xl
-            border border-white/10
-            rounded-[40px]
-            shadow-[0_40px_120px_rgba(0,0,0,0.85)]
-            px-6 sm:px-10 md:px-20
-            py-12 md:py-24
-          "
+          className="hidden md:flex justify-center items-end gap-10 px-4"
+          style={{ perspective: "1600px" }}
         >
-          {/* Subtle Red Glow */}
-          <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-[#7a0000] blur-[220px] opacity-25 pointer-events-none" />
+          {/* LEFT OUTER */}
+          <motion.div
+            style={{ y: outerY }}
+            initial={{ rotateY: 35 }}
+            className="hidden lg:block"
+          >
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden="true"
+              className="w-[240px] xl:w-[300px] rounded-3xl opacity-40"
+            />
+          </motion.div>
 
-          <div className="relative grid md:grid-cols-2 items-center gap-10 md:gap-16">
-            {/* LEFT CONTENT */}
-            <div className="space-y-6 md:space-y-8 text-left">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold text-white tracking-tight">
-                Lal Mirchi
-              </h1>
+          {/* LEFT INNER */}
+          <motion.div style={{ y: innerY }} initial={{ rotateY: 20 }}>
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden="true"
+              className="w-[190px] md:w-[260px] rounded-3xl opacity-70"
+            />
+          </motion.div>
 
-              <div className="w-16 md:w-24 h-[2px] bg-[#c6a75e]" />
+          {/* CENTER */}
+          <motion.div style={{ y: centerY }} whileHover={{ scale: 1.03 }}>
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden="true"
+              className="w-[230px] md:w-[380px] rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.9)]"
+            />
+          </motion.div>
 
-              <p className="text-[#c6a75e] uppercase tracking-[0.25em] text-xs md:text-sm">
-                Desi Authentic Taste of Bihar
-              </p>
+          {/* RIGHT INNER */}
+          <motion.div style={{ y: innerY }} initial={{ rotateY: -20 }}>
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden="true"
+              className="w-[190px] md:w-[260px] rounded-3xl opacity-70"
+            />
+          </motion.div>
 
-              <p className="text-gray-300 text-base md:text-xl max-w-lg leading-relaxed">
-                From fresh ingredients to perfectly cooked home-style dishes —
-                crafted daily with tradition and precision.
-              </p>
+          {/* RIGHT OUTER */}
+          <motion.div
+            style={{ y: outerY }}
+            initial={{ rotateY: -35 }}
+            className="hidden lg:block"
+          >
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden="true"
+              className="w-[240px] xl:w-[300px] rounded-3xl opacity-40"
+            />
+          </motion.div>
+        </div>
 
-              {/* DOWNLOAD BUTTON */}
-              <div className="pt-2 md:pt-4">
-                <a
-                  href={menuPDF}
-                  download="Lal-Mirchi-Menu.pdf"
-                  className="
-                    inline-block
-                    px-6 sm:px-8
-                    py-3 sm:py-4
-                    rounded-full
-                    bg-[#c6a75e]
-                    text-black
-                    font-medium
-                    text-sm sm:text-base
-                    hover:bg-[#a67c00]
-                    transition
-                    shadow-md
-                  "
-                >
-                  Download Menu
-                </a>
-              </div>
-            </div>
+        {/* ================= MOBILE (< md) ================= */}
+        <div className="md:hidden relative flex justify-center items-center mt-8 h-[320px]">
+          {/* LEFT BEHIND */}
+          <motion.img
+            src={heroImage}
+            alt=""
+            aria-hidden="true"
+            initial={{ rotate: -10, x: -65 }}
+            className="absolute w-[170px] rounded-3xl opacity-75"
+            style={{ y: innerY, scale: 0.95 }}
+          />
 
-            {/* RIGHT IMAGE */}
-            <div className="relative flex items-center justify-center">
-              <motion.img
-                src={heroDish}
-                alt="Featured Dish"
-                className="
-                  w-[260px]
-                  sm:w-[380px]
-                  md:w-[500px]
-                  lg:w-[600px]
-                  rounded-3xl
-                  shadow-[0_30px_80px_rgba(0,0,0,0.9)]
-                "
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </div>
-          </div>
+          {/* RIGHT BEHIND */}
+          <motion.img
+            src={heroImage}
+            alt=""
+            aria-hidden="true"
+            initial={{ rotate: 10, x: 65 }}
+            className="absolute w-[170px] rounded-3xl opacity-75"
+            style={{ y: innerY, scale: 0.95 }}
+          />
+
+          {/* CENTER FRONT */}
+          <motion.img
+            src={heroImage}
+            alt=""
+            aria-hidden="true"
+            className="relative w-[210px] rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.9)] z-10"
+            style={{ y: centerY }}
+          />
         </div>
       </div>
     </section>
