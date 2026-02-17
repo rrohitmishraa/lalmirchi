@@ -1,11 +1,11 @@
-import chickenHalf from "../assets/chicken-half.webp";
-import chickenFull from "../assets/chicken-half.webp";
-import chickenThali from "../assets/chicken-half.webp";
-import muttonHalf from "../assets/chicken-half.webp";
-import muttonFull from "../assets/chicken-half.webp";
-import muttonThali from "../assets/chicken-half.webp";
-import breadOmelette from "../assets/chicken-half.webp";
-import eggKadhaiRice from "../assets/chicken-half.webp";
+import chickenThali from "../assets/menu/chicken-thali.webp";
+import muttonThali from "../assets/menu/mutton-thali.webp";
+import chickenHalf from "../assets/menu/chicken-half.webp";
+import fullChicken from "../assets/menu/full-chicken.webp";
+import muttonHalf from "../assets/menu/mutton-half.webp";
+import muttonFull from "../assets/menu/mutton-full.webp";
+import breadOmelette from "../assets/menu/bread-omelette.webp";
+import eggKadhaiRice from "../assets/menu/egg-kadhai-rice.webp";
 
 export const categories = ["All", "Thali", "Chicken", "Mutton", "Egg/Rice"];
 
@@ -74,7 +74,7 @@ export const menuItems = [
     name: "Full Chicken",
     price: 399,
     category: "Chicken",
-    image: chickenFull,
+    image: fullChicken,
     spiceLevel: 4,
     pieces: "8 Pieces",
     description:

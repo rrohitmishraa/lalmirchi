@@ -1,6 +1,13 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
-import heroImage from "../assets/chicken-half.webp";
+//hero images
+import center from "../assets/center.webp";
+import leftInner from "../assets/leftInner.png";
+import leftOuter from "../assets/leftOuter.png";
+import rightInner from "../assets/rightInner.png";
+import rightOuter from "../assets/rightOuter.png";
+
+//menu pdf
 import menuPDF from "../assets/menu.pdf";
 
 export default function Hero() {
@@ -85,7 +92,7 @@ export default function Hero() {
             className="hidden lg:block"
           >
             <img
-              src={heroImage}
+              src={leftOuter}
               alt=""
               aria-hidden="true"
               className="w-[240px] xl:w-[300px] rounded-3xl opacity-40"
@@ -95,7 +102,7 @@ export default function Hero() {
           {/* LEFT INNER */}
           <motion.div style={{ y: innerY }} initial={{ rotateY: 20 }}>
             <img
-              src={heroImage}
+              src={leftInner}
               alt=""
               aria-hidden="true"
               className="w-[190px] md:w-[260px] rounded-3xl opacity-70"
@@ -105,7 +112,7 @@ export default function Hero() {
           {/* CENTER */}
           <motion.div style={{ y: centerY }} whileHover={{ scale: 1.03 }}>
             <img
-              src={heroImage}
+              src={center}
               alt=""
               aria-hidden="true"
               className="w-[230px] md:w-[320px] rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.9)]"
@@ -115,7 +122,7 @@ export default function Hero() {
           {/* RIGHT INNER */}
           <motion.div style={{ y: innerY }} initial={{ rotateY: -20 }}>
             <img
-              src={heroImage}
+              src={rightInner}
               alt=""
               aria-hidden="true"
               className="w-[190px] md:w-[260px] rounded-3xl opacity-70"
@@ -129,7 +136,7 @@ export default function Hero() {
             className="hidden lg:block"
           >
             <img
-              src={heroImage}
+              src={rightOuter}
               alt=""
               aria-hidden="true"
               className="w-[240px] xl:w-[300px] rounded-3xl opacity-40"
@@ -141,7 +148,7 @@ export default function Hero() {
         <div className="md:hidden relative flex justify-center items-center mt-8 h-[320px]">
           {/* LEFT BEHIND */}
           <motion.img
-            src={heroImage}
+            src={leftInner}
             alt=""
             aria-hidden="true"
             initial={{ rotate: -10, x: -65 }}
@@ -151,7 +158,7 @@ export default function Hero() {
 
           {/* RIGHT BEHIND */}
           <motion.img
-            src={heroImage}
+            src={rightInner}
             alt=""
             aria-hidden="true"
             initial={{ rotate: 10, x: 65 }}
@@ -161,7 +168,7 @@ export default function Hero() {
 
           {/* CENTER FRONT */}
           <motion.img
-            src={heroImage}
+            src={center}
             alt=""
             aria-hidden="true"
             className="relative w-[210px] rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.9)] z-10"
