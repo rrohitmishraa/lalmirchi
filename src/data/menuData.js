@@ -7,163 +7,222 @@ import muttonFull from "../assets/menu/mutton-full.webp";
 import breadOmelette from "../assets/menu/bread-omelette.webp";
 import eggKadhaiRice from "../assets/menu/egg-kadhai-rice.webp";
 
-export const categories = ["All", "Thali", "Chicken", "Mutton", "Egg/Rice"];
+/* ================= CATEGORIES ================= */
+
+export const categories = [
+  "All",
+  "Thali",
+  "Chicken",
+  "Mutton",
+  "Egg",
+  "Snacks",
+  "Maggi",
+  "Beverages",
+];
+
+/* ================= MENU ================= */
 
 export const menuItems = [
+  /* ===== THALI ===== */
   {
-    id: 1,
-    name: "Chicken Thali",
+    id: "chicken-thali",
+    name: "Chicken Curry Thali",
     price: 150,
     category: "Thali",
+    tags: ["Chicken"],
     image: chickenThali,
     spiceLevel: 3,
-    pieces: "2 Chicken Pieces",
-    description: "Complete desi meal with chicken curry and traditional sides.",
-    ingredients: [
-      "Chicken Curry (2PC)",
-      "2 Roti",
-      "Chawal (Rice)",
-      "Chatni",
-      "Pyaaz",
-      "Traditional Masala",
-    ],
+    pieces: "2 Pieces",
+    available: true,
+    popular: true,
+    description: "2pc chicken, 2 roti, rice, chutney, onion salad",
   },
 
   {
-    id: 2,
+    id: "egg-thali",
+    name: "Egg Curry Thali",
+    price: 150,
+    category: "Thali",
+    tags: ["Egg"],
+    spiceLevel: 2,
+    pieces: "2 Eggs",
+    available: true,
+    description: "2 eggs, 2 roti, rice, chutney, onion salad",
+  },
+
+  {
+    id: "mutton-thali",
     name: "Mutton Thali",
     price: 250,
     category: "Thali",
+    tags: ["Mutton"],
     image: muttonThali,
     spiceLevel: 4,
-    pieces: "2 Mutton Pieces",
-    description:
-      "Authentic Bihari mutton thali with rich curry and fresh sides.",
-    ingredients: [
-      "Mutton Curry (2PC)",
-      "2 Roti",
-      "Chawal (Rice)",
-      "Chatni",
-      "Pyaaz",
-      "Whole Garam Masala",
-    ],
+    pieces: "2 Pieces",
+    available: true,
+    description: "2pc mutton, 2 roti, rice, chutney, onion salad",
   },
 
+  /* ===== CHICKEN ===== */
   {
-    id: 3,
-    name: "Chicken Half",
+    id: "chicken-half",
+    name: "Chicken Curry Half",
     price: 199,
     category: "Chicken",
     image: chickenHalf,
     spiceLevel: 4,
     pieces: "4 Pieces",
-    description:
-      "Spicy desi style half chicken cooked in bold traditional masala.",
-    ingredients: [
-      "Chicken (4PC)",
-      "Mustard Oil",
-      "Red Chilli",
-      "Turmeric",
-      "Garam Masala",
-      "Ginger Garlic",
-    ],
+    available: true,
   },
 
   {
-    id: 4,
-    name: "Full Chicken",
+    id: "chicken-full",
+    name: "Chicken Curry Full",
     price: 399,
     category: "Chicken",
     image: fullChicken,
     spiceLevel: 4,
     pieces: "8 Pieces",
-    description:
-      "Full portion chicken with authentic desi spices and rich flavor.",
-    ingredients: [
-      "Chicken (8PC)",
-      "Mustard Oil",
-      "Whole Spices",
-      "Red Chilli",
-      "Coriander Powder",
-      "Garlic",
-    ],
+    available: true,
+    popular: true,
   },
 
+  /* ===== MUTTON ===== */
   {
-    id: 5,
-    name: "Mutton Half",
+    id: "mutton-half",
+    name: "Mutton Curry Half",
     price: 399,
     category: "Mutton",
     image: muttonHalf,
     spiceLevel: 5,
     pieces: "4 Pieces",
-    description:
-      "Rich and spicy mutton cooked slowly for deep authentic flavor.",
-    ingredients: [
-      "Mutton (4PC)",
-      "Mustard Oil",
-      "Whole Garam Masala",
-      "Red Chilli",
-      "Onion",
-      "Tomato",
-    ],
+    available: true,
   },
 
   {
-    id: 6,
-    name: "Mutton Full",
+    id: "mutton-full",
+    name: "Mutton Curry Full",
     price: 699,
     category: "Mutton",
     image: muttonFull,
     spiceLevel: 5,
     pieces: "8 Pieces",
-    description:
-      "Full mutton serving with bold spices and traditional Bihari taste.",
-    ingredients: [
-      "Mutton (8PC)",
-      "Mustard Oil",
-      "Black Pepper",
-      "Red Chilli",
-      "Whole Spices",
-      "Coriander Powder",
-    ],
+    available: true,
+    popular: true,
   },
 
+  /* ===== EGG ===== */
   {
-    id: 7,
-    name: "Bread Omelette",
-    price: 80,
-    category: "Egg/Rice",
+    id: "bread-omelette-double",
+    name: "Bread Omelette (Double)",
+    price: 99,
+    category: "Egg",
     image: breadOmelette,
     spiceLevel: 2,
     pieces: "2 Eggs",
-    description: "Classic roadside style bread omelette with mild desi spice.",
-    ingredients: [
-      "Eggs",
-      "Bread",
-      "Green Chilli",
-      "Onion",
-      "Salt",
-      "Black Pepper",
-    ],
+    available: true,
   },
 
   {
-    id: 8,
-    name: "Egg Kadhai & Rice",
-    price: 90,
-    category: "Egg/Rice",
+    id: "bread-omelette-single",
+    name: "Bread Omelette (Single)",
+    price: 80,
+    category: "Egg",
+    spiceLevel: 2,
+    pieces: "1 Egg",
+    available: true,
+  },
+
+  {
+    id: "egg-fried-rice",
+    name: "Egg Fried Rice",
+    price: 150,
+    category: "Egg",
     image: eggKadhaiRice,
     spiceLevel: 3,
-    pieces: "2 Eggs",
-    description: "Spicy egg kadhai served with steamed rice and fresh masala.",
-    ingredients: [
-      "2 Eggs",
-      "Chawal (Rice)",
-      "Onion",
-      "Tomato",
-      "Turmeric",
-      "Coriander Powder",
-    ],
+    available: true,
+  },
+
+  {
+    id: "boiled-egg",
+    name: "Boiled Egg",
+    price: 15,
+    category: "Egg",
+    available: true,
+  },
+
+  /* ===== MAGGI ===== */
+  {
+    id: "plain-maggi",
+    name: "Plain Maggi",
+    price: 50,
+    category: "Maggi",
+    available: true,
+  },
+
+  {
+    id: "egg-maggi",
+    name: "Egg Maggi",
+    price: 80,
+    category: "Maggi",
+    available: true,
+  },
+
+  {
+    id: "chicken-maggi",
+    name: "Chicken Maggi",
+    price: 99,
+    category: "Maggi",
+    available: true,
+  },
+
+  /* ===== SNACKS ===== */
+  {
+    id: "seekh-kebab",
+    name: "Seekh Kebab",
+    price: 80,
+    category: "Snacks",
+    available: true,
+  },
+
+  {
+    id: "veg-sandwich",
+    name: "Veg Sandwich",
+    price: 50,
+    category: "Snacks",
+    available: true,
+  },
+
+  {
+    id: "paneer-sandwich",
+    name: "Paneer Sandwich",
+    price: 50,
+    category: "Snacks",
+    available: true,
+  },
+
+  /* ===== BEVERAGES ===== */
+  {
+    id: "chai",
+    name: "Adrak / Ilaichi Chai",
+    price: 20,
+    category: "Beverages",
+    available: true,
+  },
+
+  {
+    id: "chaach",
+    name: "Chaach",
+    price: 30,
+    category: "Beverages",
+    available: true,
+  },
+
+  {
+    id: "cold-drinks",
+    name: "Cold Drinks",
+    price: null,
+    category: "Beverages",
+    available: true,
   },
 ];
