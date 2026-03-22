@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 export default function MenuPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
-  const [visibleCategory, setVisibleCategory] = useState("Snacks");
 
   const sectionRefs = useRef({});
 
@@ -40,27 +39,6 @@ export default function MenuPage() {
 
   useEffect(() => {
     if (activeFilter !== "All") return;
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 180;
-
-      let current = orderedCategories[0];
-
-      for (const category of orderedCategories) {
-        const section = sectionRefs.current[category];
-        if (section && section.offsetTop <= scrollPosition) {
-          current = category;
-        }
-      }
-
-      setVisibleCategory(current);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
   }, [activeFilter, orderedCategories]);
 
   /* ================= ROW ================= */
@@ -101,14 +79,8 @@ export default function MenuPage() {
 
       if (!items.length) return null;
 
-      const isActive = visibleCategory === category;
-
       return (
-        <div
-          key={category}
-          ref={(el) => (sectionRefs.current[category] = el)}
-          className="mb-6"
-        >
+        <div key={category} className="mb-6">
           <h2
             className={
               "text-xs uppercase tracking-wide mb-2 transition text-[#c6a75e] font-semibold"
