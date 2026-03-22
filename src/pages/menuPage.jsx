@@ -110,9 +110,9 @@ export default function MenuPage() {
           className="mb-6"
         >
           <h2
-            className={`text-xs uppercase tracking-wide mb-2 transition ${
-              isActive ? "text-[#c6a75e] font-semibold" : "text-gray-500"
-            }`}
+            className={
+              "text-xs uppercase tracking-wide mb-2 transition text-[#c6a75e] font-semibold"
+            }
           >
             {category}
           </h2>
@@ -170,7 +170,7 @@ export default function MenuPage() {
               <button
                 key={cat}
                 onClick={() => {
-                  setActiveFilter("All");
+                  setActiveFilter(cat);
 
                   sectionRefs.current[cat]?.scrollIntoView({
                     behavior: "smooth",
@@ -178,8 +178,7 @@ export default function MenuPage() {
                   });
                 }}
                 className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
-                  activeFilter === cat ||
-                  (activeFilter === "All" && visibleCategory === cat)
+                  activeFilter === cat
                     ? "bg-[#c6a75e] text-black"
                     : "bg-[#1a1a1a]"
                 }`}
