@@ -1,14 +1,34 @@
-import { useState, useMemo, useRef, useEffect } from "react";
-import { menuItems } from "../data/menuData";
+import { useState, useMemo, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { fetchMenu } from "../utils/getMenu";
 
 export default function MenuPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  const sectionRefs = useRef({});
+  /* ================= LOAD MENU ================= */
 
-  /* ✅ FIX 1: stable reference */
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await fetchMenu();
+        setMenuItems(data);
+      } catch (err) {
+        console.error("Menu fetch failed", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
+  /* ================= CATEGORY ORDER ================= */
+
   const orderedCategories = useMemo(
     () => ["Snacks", "Beverages", "Maggi", "Egg", "Chicken", "Mutton", "Thali"],
     [],
@@ -33,13 +53,7 @@ export default function MenuPage() {
 
       return searchMatch && categoryMatch;
     });
-  }, [searchQuery, activeFilter]);
-
-  /* ================= SCROLL TRACK ================= */
-
-  useEffect(() => {
-    if (activeFilter !== "All") return;
-  }, [activeFilter, orderedCategories]);
+  }, [menuItems, searchQuery, activeFilter]);
 
   /* ================= ROW ================= */
 
@@ -64,6 +78,7 @@ export default function MenuPage() {
   /* ================= LIST ================= */
 
   const renderList = () => {
+    // SEARCH / FILTER
     if (searchQuery || activeFilter !== "All") {
       if (!filteredItems.length) {
         return <div className="text-gray-400">No items found.</div>;
@@ -72,6 +87,7 @@ export default function MenuPage() {
       return filteredItems.map((item) => <MenuRow key={item.id} item={item} />);
     }
 
+    // ALL → grouped
     return orderedCategories.map((category) => {
       const items = menuItems.filter(
         (item) => item.category === category && item.available,
@@ -81,11 +97,7 @@ export default function MenuPage() {
 
       return (
         <div key={category} className="mb-6">
-          <h2
-            className={
-              "text-xs uppercase tracking-wide mb-2 transition text-[#c6a75e] font-semibold"
-            }
-          >
+          <h2 className="text-xs uppercase tracking-wide mb-2 text-[#c6a75e] font-semibold">
             {category}
           </h2>
 
@@ -97,6 +109,24 @@ export default function MenuPage() {
     });
   };
 
+  /* ================= UI STATES ================= */
+
+  if (loading) {
+    return (
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
+        Loading menu...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
+        Failed to load menu. Please try again.
+      </div>
+    );
+  }
+
   /* ================= UI ================= */
 
   return (
@@ -104,6 +134,7 @@ export default function MenuPage() {
       <Navbar />
 
       <div className="px-4 md:px-20 lg:px-28 pt-24 pb-10">
+        {/* STICKY TOP */}
         <div className="sticky top-16 z-50 bg-black pb-4">
           {/* SEARCH */}
           <input
@@ -141,14 +172,7 @@ export default function MenuPage() {
             {orderedCategories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => {
-                  setActiveFilter(cat);
-
-                  sectionRefs.current[cat]?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }}
+                onClick={() => setActiveFilter(cat)}
                 className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
                   activeFilter === cat
                     ? "bg-[#c6a75e] text-black"
