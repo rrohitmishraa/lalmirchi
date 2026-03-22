@@ -9,15 +9,11 @@ export default function MenuPage() {
 
   const sectionRefs = useRef({});
 
-  const orderedCategories = [
-    "Snacks",
-    "Beverages",
-    "Maggi",
-    "Egg",
-    "Chicken",
-    "Mutton",
-    "Thali",
-  ];
+  /* ✅ FIX 1: stable reference */
+  const orderedCategories = useMemo(
+    () => ["Snacks", "Beverages", "Maggi", "Egg", "Chicken", "Mutton", "Thali"],
+    [],
+  );
 
   /* ================= FILTER ================= */
 
@@ -61,8 +57,11 @@ export default function MenuPage() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [activeFilter]);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [activeFilter, orderedCategories]);
 
   /* ================= ROW ================= */
 
@@ -110,7 +109,6 @@ export default function MenuPage() {
           ref={(el) => (sectionRefs.current[category] = el)}
           className="mb-6"
         >
-          {/* CATEGORY HEADER */}
           <h2
             className={`text-xs uppercase tracking-wide mb-2 transition ${
               isActive ? "text-[#c6a75e] font-semibold" : "text-gray-500"
@@ -134,7 +132,6 @@ export default function MenuPage() {
       <Navbar />
 
       <div className="px-4 md:px-20 lg:px-28 pt-24 pb-10">
-        {/* 🔥 STICKY TOP BLOCK */}
         <div className="sticky top-16 z-50 bg-black pb-4">
           {/* SEARCH */}
           <input
