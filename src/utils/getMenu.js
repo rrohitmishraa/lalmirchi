@@ -25,10 +25,13 @@ const imageMap = {
 
 export const fetchMenu = async () => {
   const res = await fetch(
-    "https://opensheet.elk.sh/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Menu",
+    "https://myjson.unlinkly.com/api/sheet/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Sheet1",
   );
 
-  const data = await res.json();
+  const json = await res.json();
+
+  // 🔥 Handle both formats like an adult
+  const data = Array.isArray(json) ? json : json.data;
 
   return data.map((item) => ({
     id: item.id,
@@ -36,8 +39,6 @@ export const fetchMenu = async () => {
     price: item.price ? Number(item.price) : null,
     category: item.category,
     available: item.available === "TRUE",
-
-    // 🔥 MAGIC HERE
     image: item.image ? imageMap[item.image] || null : null,
   }));
 };
