@@ -24,21 +24,41 @@ const imageMap = {
 /* ================= FETCH MENU ================= */
 
 export const fetchMenu = async () => {
-  const res = await fetch(
-    "https://myjson.unlinkly.com/api/sheet/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Sheet1",
-  );
+  try {
+    const res = await fetch(
+      "http://myjson.unlinkly.com/api/sheet/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Sheet1",
+    );
 
-  const json = await res.json();
+    const json = await res.json();
 
-  // 🔥 Handle both formats like an adult
-  const data = Array.isArray(json) ? json : json.data;
+    // ✅ always get array safely
+    const data = Array.isArray(json) ? json : json?.data || [];
 
-  return data.map((item) => ({
-    id: item.id,
-    name: item.name,
-    price: item.price ? Number(item.price) : null,
-    category: item.category,
-    available: item.available === "TRUE",
-    image: item.image ? imageMap[item.image] || null : null,
-  }));
+    console.log("API DATA:", data); // 🔥 debug once
+
+    return data
+      .filter((item) => item && Object.keys(item).length > 0) // remove empty rows
+      .map((item, index) => ({
+        id: item.id || String(index + 1), // fallback ID
+        name: item.name || "",
+
+        price:
+          item.price !== undefined && item.price !== ""
+            ? Number(item.price)
+            : null,
+
+        category: item.category || "",
+
+        // ✅ default TRUE so items don’t disappear
+        available:
+          typeof item.available === "string"
+            ? item.available.toUpperCase() === "TRUE"
+            : true,
+
+        image: item.image && imageMap[item.image] ? imageMap[item.image] : null,
+      }));
+  } catch (err) {
+    console.error("Menu fetch failed:", err);
+    return [];
+  }
 };
