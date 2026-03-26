@@ -130,29 +130,38 @@ export default function MenuPage() {
   /* ================= UI ================= */
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="relative min-h-screen text-white bg-gradient-to-b from-[#3b0000] via-[#1a0000] to-black overflow-hidden">
+      {/* 🔥 GRID BACKGROUND */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
       <Navbar />
 
-      <div className="px-4 md:px-20 lg:px-28 pt-24 pb-10">
+      <div className="relative px-4 md:px-20 lg:px-28 pt-24 pb-10 z-10">
         {/* STICKY TOP */}
-        <div className="sticky top-16 z-50 bg-black pb-4">
+        <div className="sticky top-16 z-50 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl px-3 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
           {/* SEARCH */}
           <input
             type="text"
             placeholder="Search menu..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-3 mb-4 rounded-lg bg-[#1a1a1a] text-sm outline-none"
+            className="w-full p-3 mb-4 rounded-xl bg-white/5 border border-white/20 text-sm outline-none backdrop-blur-xl placeholder:text-white/50"
           />
 
           {/* FILTERS */}
           <div className="flex gap-2 overflow-x-auto">
             <button
               onClick={() => setActiveFilter("Special")}
-              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
+              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap${
                 activeFilter === "Special"
-                  ? "bg-[#c6a75e] text-black"
-                  : "bg-[#1a1a1a]"
+                  ? " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
+                  : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
               }`}
             >
               🔥 Today’s Special
@@ -160,10 +169,10 @@ export default function MenuPage() {
 
             <button
               onClick={() => setActiveFilter("All")}
-              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
+              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap${
                 activeFilter === "All"
-                  ? "bg-[#c6a75e] text-black"
-                  : "bg-[#1a1a1a]"
+                  ? " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
+                  : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
               }`}
             >
               All
@@ -173,10 +182,10 @@ export default function MenuPage() {
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
-                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
+                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap${
                   activeFilter === cat
-                    ? "bg-[#c6a75e] text-black"
-                    : "bg-[#1a1a1a]"
+                    ? " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
+                    : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
                 }`}
               >
                 {cat}
