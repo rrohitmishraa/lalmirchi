@@ -26,39 +26,64 @@ const imageMap = {
 export const fetchMenu = async () => {
   try {
     const res = await fetch(
-      "http://myjson.unlinkly.com/api/sheet/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Sheet1",
+      "https://myjson.unlinkly.com/api/sheet/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Sheet1?t=" +
+        Date.now(),
+      { cache: "no-store" },
     );
 
-    const json = await res.json();
+    const text = await res.text();
 
-    // ✅ always get array safely
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch (e) {
+      console.error("❌ Invalid JSON:", text);
+      return [];
+    }
+
+    // ✅ handle both formats
     const data = Array.isArray(json) ? json : json?.data || [];
 
-    console.log("API DATA:", data); // 🔥 debug once
+    return (
+      data
+        // 🔥 remove garbage rows
+        .filter(
+          (item) =>
+            item &&
+            typeof item === "object" &&
+            Object.values(item).some((v) => v !== "" && v !== null),
+        )
+        .map((item, index) => {
+          // 🔥 normalize keys (because your API LOVES being inconsistent)
+          const name = item.name || item["name "] || "";
+          const price = item.price ?? item["price "] ?? "";
+          const category = item.category || "";
+          const available = item.available ?? "TRUE";
+          const imageKey = item.image || "";
 
-    return data
-      .filter((item) => item && Object.keys(item).length > 0) // remove empty rows
-      .map((item, index) => ({
-        id: item.id || String(index + 1), // fallback ID
-        name: item.name || "",
+          return {
+            id: item.id ? String(item.id) : String(index + 1),
 
-        price:
-          item.price !== undefined && item.price !== ""
-            ? Number(item.price)
-            : null,
+            name: String(name).trim(),
 
-        category: item.category || "",
+            price:
+              price !== "" && price !== null && !isNaN(price)
+                ? Number(price)
+                : null,
 
-        // ✅ default TRUE so items don’t disappear
-        available:
-          typeof item.available === "string"
-            ? item.available.toUpperCase() === "TRUE"
-            : true,
+            category: String(category).trim(),
 
-        image: item.image && imageMap[item.image] ? imageMap[item.image] : null,
-      }));
+            available:
+              typeof available === "string"
+                ? available.toUpperCase() === "TRUE"
+                : Boolean(available),
+
+            image: imageKey && imageMap[imageKey] ? imageMap[imageKey] : null,
+          };
+        })
+    );
   } catch (err) {
-    console.error("Menu fetch failed:", err);
+    console.error("🔥 Menu fetch failed:", err);
     return [];
   }
 };
