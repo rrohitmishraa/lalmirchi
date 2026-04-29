@@ -8,6 +8,7 @@ export default function MenuPage() {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   /* ================= LOAD MENU ================= */
 
@@ -16,6 +17,14 @@ export default function MenuPage() {
       try {
         const data = await fetchMenu();
         setMenuItems(data);
+        // fetch categories from sheet
+        const catRes = await fetch(
+          "https://myjson.unlinkly.com/api/sheet/1a3VEteV5ey1cqhnrf5BCNSa7bGi8AIW9v2UlShmnjoc/Cat",
+        );
+        const catJson = await catRes.json();
+        if (catJson?.success) {
+          setCategories(catJson.data.map((c) => c.category));
+        }
       } catch (err) {
         console.error("Menu fetch failed", err);
         setError(true);
@@ -26,13 +35,6 @@ export default function MenuPage() {
 
     load();
   }, []);
-
-  /* ================= CATEGORY ORDER ================= */
-
-  const orderedCategories = useMemo(
-    () => ["Snacks", "Beverages", "Maggi", "Egg", "Chicken", "Mutton", "Thali"],
-    [],
-  );
 
   /* ================= FILTER ================= */
 
@@ -45,11 +47,9 @@ export default function MenuPage() {
         .includes(searchQuery.toLowerCase());
 
       const categoryMatch =
-        activeFilter === "All"
-          ? true
-          : activeFilter === "Special"
-            ? item.popular
-            : item.category === activeFilter;
+        activeFilter === "All" ? true
+        : activeFilter === "Special" ? item.popular
+        : item.category?.toLowerCase() === activeFilter.toLowerCase();
 
       return searchMatch && categoryMatch;
     });
@@ -59,9 +59,9 @@ export default function MenuPage() {
 
   const MenuRow = ({ item }) => {
     const price =
-      item.price !== null && item.price !== undefined
-        ? `₹${item.price}`
-        : "MRP";
+      item.price !== null && item.price !== undefined ?
+        `₹${item.price}`
+      : "MRP";
 
     return (
       <div className="flex justify-between items-center py-3 border-b border-white/10">
@@ -88,7 +88,7 @@ export default function MenuPage() {
     }
 
     // ALL → grouped
-    return orderedCategories.map((category) => {
+    return categories.map((category) => {
       const items = menuItems.filter(
         (item) => item.category === category && item.available,
       );
@@ -159,9 +159,9 @@ export default function MenuPage() {
             <button
               onClick={() => setActiveFilter("Special")}
               className={`px-4 py-2 rounded-full text-sm whitespace-nowrap${
-                activeFilter === "Special"
-                  ? " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
-                  : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
+                activeFilter === "Special" ?
+                  " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
+                : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
               }`}
             >
               🔥 Today’s Special
@@ -170,22 +170,22 @@ export default function MenuPage() {
             <button
               onClick={() => setActiveFilter("All")}
               className={`px-4 py-2 rounded-full text-sm whitespace-nowrap${
-                activeFilter === "All"
-                  ? " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
-                  : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
+                activeFilter === "All" ?
+                  " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
+                : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
               }`}
             >
               All
             </button>
 
-            {orderedCategories.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
                 className={`px-4 py-2 rounded-full text-sm whitespace-nowrap${
-                  activeFilter === cat
-                    ? " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
-                    : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
+                  activeFilter === cat ?
+                    " bg-[#c6a75e]/90 text-black backdrop-blur-xl shadow-inner shadow-white/5"
+                  : " bg-white/5 border border-white/20 backdrop-blur-xl hover:bg-white/10 shadow-inner shadow-white/5"
                 }`}
               >
                 {cat}

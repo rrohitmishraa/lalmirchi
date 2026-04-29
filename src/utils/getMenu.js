@@ -60,6 +60,7 @@ export const fetchMenu = async () => {
           const category = item.category || "";
           const available = item.available ?? "TRUE";
           const imageKey = item.image || "";
+          const popular = item.popular ?? "FALSE";
 
           return {
             id: item.id ? String(item.id) : String(index + 1),
@@ -67,16 +68,21 @@ export const fetchMenu = async () => {
             name: String(name).trim(),
 
             price:
-              price !== "" && price !== null && !isNaN(price)
-                ? Number(price)
-                : null,
+              price !== "" && price !== null && !isNaN(price) ?
+                Number(price)
+              : null,
 
             category: String(category).trim(),
 
             available:
-              typeof available === "string"
-                ? available.toUpperCase() === "TRUE"
-                : Boolean(available),
+              typeof available === "string" ?
+                available.toUpperCase() === "T"
+              : Boolean(available),
+
+            popular:
+              typeof popular === "string" ?
+                popular.toUpperCase() === "T"
+              : Boolean(popular),
 
             image: imageKey && imageMap[imageKey] ? imageMap[imageKey] : null,
           };
